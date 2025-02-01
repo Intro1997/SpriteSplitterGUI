@@ -15,7 +15,7 @@
 
 我们可以通过拖动文件夹内的图片文件到预览区来打开这些图片：
 
-![load_image.mp4](./imgs/load_image.mp4)
+https://github.com/user-attachments/assets/79ded643-b86a-479d-9d09-8e2d01fa7b67
 
 预览区默认会打开最后一个加载的图片，并对其进行切分算法执行，若图片较大，可能需要耐心等待一会儿。
 
@@ -23,7 +23,7 @@
 
 你可以在预览区使用以下操作来浏览图像：
 
-![view_image.mp4](./imgs/view_image.mp4)
+https://github.com/user-attachments/assets/d54c8057-16bf-47b9-898b-c85aade4bfb4
 
 - 缩放预览区：使用 ctrl+鼠标滚轮 Up/Down 来放大或缩小预览范围
 - 移动预览区：使用 鼠标滚轮 Up/Down 来向上/向下移动预览区，使用 shift+鼠标滚轮 Up/Down 来向左/向右移动预览区
@@ -35,7 +35,7 @@
 
 上图左侧角色的头发由于和其他像素之间有空隙，所以没有被算法识别为一个图像，我们可以对它做一些尺寸的调整，同时我们也可以按下键盘的 delete 键删除多余的盒子（不需要切分的区域）：
 
-![modify_box.mp4](./imgs/modify_box.mp4)
+https://github.com/user-attachments/assets/f6987467-4b18-44a6-a1af-b1255fdf6141
 
 ## 文件列表区
 
@@ -43,7 +43,7 @@
 
 当我们添加了多个图片后，你可以自由的通过点击任何一个项来选择一张图片，每个图片第一次被选中时，都会执行算法，对于尺寸较大的图片，会需要耐心等待一下：
 
-![select_images.mp4](./imgs/select_images.mp4)
+https://github.com/user-attachments/assets/ba717a7f-52c1-45fd-ba97-fe2d0a621bb9
 
 每次添加图片时，文件列表区会自动选择到最后一个新加载的图片，并且重复添加图片时，文件列表区会自动选择到最后一个重复添加的图片。
 
@@ -68,13 +68,13 @@
 
 当所有 box 都调整完成后，我们可以点击 save 来保存当前的改动。我们切换图片时，显示的盒子位置也是上一次保存的状态。
 
-![save_box_modify.mp4](./imgs/save_box_modify.mp4)
+https://github.com/user-attachments/assets/2f2a1140-9400-40c6-a323-e9072506e83c
 
 ## 导出切分后的图像
 
 当所有 box 都调整完成后，我们可以点击 save 来保存当前的改动，然后点击 browse 按钮选择一个存放位置，然后点击 export 按钮来导出：
 
-![export_sprites.mp4](./imgs/export_sprites.mp4)
+https://github.com/user-attachments/assets/ab16a589-2e6f-4f40-8816-df645432677a
 
 ## 取消所有 box 的改动
 
