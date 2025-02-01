@@ -201,66 +201,76 @@ class PreviewArea(QGraphicsView):
                     handle.setBrush(QColor(0, 255, 0))
                     self.scene.addItem(handle)
 
+    def _handle_box_checked(self, i, box, pos):
+        ltcx, ltcy = box.left_top_corner
+        rbcx, rbcy = box.right_bottom_corner
+        tbox = box.left_top_corner + (rbcx - ltcx + 1, rbcy - ltcy + 1)
+        rect = QRectF(*tbox)
+
+        """
+        handling box control point click
+        """
+        # resize control point by scalling
+        control_point_size = 10 / self.transform().m11()
+        # all control point position on box
+        control_point_pos_infos = [
+            (rect.topLeft(), 'top-left'),
+            (rect.topRight(), 'top-right'),
+            (rect.bottomLeft(), 'bottom-left'),
+            (rect.bottomRight(), 'bottom-right'),
+            (QPointF(rect.center().x(), rect.top()), 'top'),
+            (QPointF(rect.center().x(), rect.bottom()), 'bottom'),
+            (QPointF(rect.left(), rect.center().y()), 'left'),
+            (QPointF(rect.right(), rect.center().y()), 'right')
+        ]
+        for control_point_pos, control_point_type in control_point_pos_infos:
+            control_point_rect = QRectF(
+                control_point_pos.x() - control_point_size/2,
+                control_point_pos.y() - control_point_size/2,
+                control_point_size,
+                control_point_size
+            )
+            if control_point_rect.contains(pos):
+                self.selected_box = i
+                self.drag_start_pos = pos
+                self.drag_start_rect = rect
+                self.drag_handle = control_point_type
+                self.draw_boxes()
+                self.box_modified.emit()
+                return True
+
+        """
+        handling box click
+        """
+        inner_rect = QRectF(
+            rect.x(),
+            rect.y(),
+            rect.width(),
+            rect.height()
+        )
+        if inner_rect.contains(pos):
+            self.selected_box = i
+            self.drag_start_pos = pos
+            self.drag_start_rect = rect
+            self.drag_handle = 'move'
+            self.draw_boxes()
+            self.box_modified.emit()
+            return True
+        return False
+
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             pos = self.mapToScene(event.pos())
+            # do selected box check first
+            if self.selected_box and \
+                    self._handle_box_checked(self.selected_box, self.boxes[self.selected_box], pos):
+                return
 
             for i, box in enumerate(self.boxes):
-                ltcx, ltcy = box.left_top_corner
-                rbcx, rbcy = box.right_bottom_corner
-                tbox = box.left_top_corner + (rbcx - ltcx + 1, rbcy - ltcy + 1)
-                rect = QRectF(*tbox)
-
-                """
-                handling box control point click
-                """
-                # resize control point by scalling
-                control_point_size = 10 / self.transform().m11()
-                # all control point position on box
-                control_point_pos_infos = [
-                    (rect.topLeft(), 'top-left'),
-                    (rect.topRight(), 'top-right'),
-                    (rect.bottomLeft(), 'bottom-left'),
-                    (rect.bottomRight(), 'bottom-right'),
-                    (QPointF(rect.center().x(), rect.top()), 'top'),
-                    (QPointF(rect.center().x(), rect.bottom()), 'bottom'),
-                    (QPointF(rect.left(), rect.center().y()), 'left'),
-                    (QPointF(rect.right(), rect.center().y()), 'right')
-                ]
-                for control_point_pos, control_point_type in control_point_pos_infos:
-                    control_point_rect = QRectF(
-                        control_point_pos.x() - control_point_size/2,
-                        control_point_pos.y() - control_point_size/2,
-                        control_point_size,
-                        control_point_size
-                    )
-                    if control_point_rect.contains(pos):
-                        self.selected_box = i
-                        self.drag_start_pos = pos
-                        self.drag_start_rect = rect
-                        self.drag_handle = control_point_type
-                        self.draw_boxes()
-                        self.box_modified.emit()
-                        return
-
-                """
-                handling box click
-                """
-                inner_rect = QRectF(
-                    rect.x(),
-                    rect.y(),
-                    rect.width(),
-                    rect.height()
-                )
-                if inner_rect.contains(pos):
-                    self.selected_box = i
-                    self.drag_start_pos = pos
-                    self.drag_start_rect = rect
-                    self.drag_handle = 'move'
-                    self.draw_boxes()
-                    self.box_modified.emit()
+                if self._handle_box_checked(i, box, pos):
                     return
-
+                elif self.selected_box == i:
+                    continue
             """
             handling empty area click
             (cancel box selected)
