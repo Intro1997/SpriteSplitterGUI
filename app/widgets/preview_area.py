@@ -9,14 +9,17 @@ from typing import List
 class PreviewArea(QGraphicsView):
     box_modified = Signal()
 
-    def __init__(self, file_list):
+    def __init__(self, file_list, is_dark_mode):
         super().__init__()
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
         self.setRenderHint(QPainter.Antialiasing)
         self.file_list = file_list
 
-        self.setBackgroundBrush(QColor(31, 31, 31))
+        if is_dark_mode:
+            self.setBackgroundBrush(QColor(31, 31, 31))
+        else:
+            self.setBackgroundBrush(QColor(240, 240, 240))
 
         # scalling settings
         self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)

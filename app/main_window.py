@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton
 )
-from PySide6.QtGui import QShortcut, QKeySequence
+from PySide6.QtGui import QShortcut, QKeySequence, QPalette
 from .widgets.file_list import FileListWidget
 from .widgets.preview_area import PreviewArea
 from .widgets.info_panel import InfoPanel
@@ -10,11 +10,21 @@ from sprite_splitter import Box
 from typing import List
 
 
-class MainWindow(QMainWindow):
-    def __init__(self):
+def is_dark_mode(app):
+    palette = app.palette()
+    background_color = palette.color(QPalette.Window)
+
+    brightness = background_color.red() * 0.299 + background_color.green() * \
+        0.587 + background_color.blue() * 0.114
+    return brightness < 128
+
+
+class MainWindow(QMainWindow,):
+    def __init__(self, app):
         super().__init__()
         self.setWindowTitle("Sprite Splitter GUI")
         self.setMinimumSize(800, 600)
+        self.is_dark_mode = is_dark_mode(app)
         self.setup_ui()
         self.setup_shortcuts()
 
@@ -27,7 +37,7 @@ class MainWindow(QMainWindow):
         layout = QHBoxLayout()
 
         self.file_list = FileListWidget()
-        self.preview_area = PreviewArea(self.file_list)
+        self.preview_area = PreviewArea(self.file_list, self.is_dark_mode)
         self.info_panel = InfoPanel(self.file_list)
 
         layout.addWidget(self.file_list)
