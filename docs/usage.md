@@ -3,7 +3,7 @@
 # Software Interface
 
 When the software runs successfully, you will see the following interface:
-![interface_cn.png](./imgs/interface_cn.png)
+![interface_cn.png](./imgs/interface.png)
 
 The software consists of three areas and two buttons. Below is a detailed introduction.
 
