@@ -19,5 +19,3 @@ python3 main.py
 ```
 
 For more details on how to use the interface, please refer to [usage.md](./docs/usage.md).
-
-后续如果有人使用，可以根据 https://github.com/yeoji/spritesheet-cutter 新增功能
